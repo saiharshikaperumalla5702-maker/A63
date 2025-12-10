@@ -52,3 +52,37 @@ ggplot(group_stats, aes(team_type, mean, fill = team_type)) +
   ggtitle("Mean Goals by Venue Type") +
   ylab("Mean Goals") +
   scale_fill_manual(values = c("lightblue", "salmon"))
+# 6.Applied Independent t-test
+
+
+t_test_result <- t.test(goals ~ team_type, data = data)
+print(t_test_result)
+
+
+# 7.Applied Effect Size (Cohen's d)
+
+
+away  <- data$goals[data$team_type == "Away"]
+home  <- data$goals[data$team_type == "Home"]
+
+sd_pooled <- sqrt(((length(away)-1)*var(away) + 
+                     (length(home)-1)*var(home)) /
+                    (length(away) + length(home) - 2))
+
+cohen_d <- (mean(home) - mean(away)) / sd_pooled
+cohen_d
+
+
+# 8.Applied for Effect Size Visualisation
+
+
+effect_df <- data.frame(
+  team_type = c("Away", "Home"),
+  mean      = c(mean(away), mean(home))
+)
+
+ggplot(effect_df, aes(team_type, mean, fill = team_type)) +
+  geom_bar(stat="identity") +
+  ggtitle("Effect Size Visualisation (Mean Difference)") +
+  ylab("Mean Goals")
+

@@ -18,3 +18,15 @@ data <- data.frame(
 data <- na.omit(data)
 
 data$team_type <- factor(data$team_type, levels = c("Away", "Home"))
+#Prepare dataset for analysis
+group_stats <- data %>%
+  group_by(team_type) %>%
+  summarise(
+    n = n(),
+    mean = mean(goals),
+    median = median(goals),
+    sd = sd(goals),
+    var = var(goals)
+  )
+
+print(group_stats)
